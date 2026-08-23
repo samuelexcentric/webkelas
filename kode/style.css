@@ -1,0 +1,704 @@
+@font-face {
+  font-family: 'Espoir';
+  src: url('Espoir_Serif.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --crimson: #5a1010;
+  --crimson-dark: #2e0808;
+  --crimson-mid: #7a1a1a;
+  --gold: #c9a96e;
+  --gold-light: #e8d5a8;
+  --cream: #f0e6c8;
+  --parchment: #d4b896;
+  --dark: #0d0505;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { 
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--dark);
+  color: var(--cream);
+  font-family: 'Espoir', serif;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+/* =================== INTRO & GRAIN =================== */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: var(--dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+#intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../cover/ornamen.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.09;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#intro-arteo, #intro-excentric {
+  font-family: 'Espoir', serif;
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-align: center;
+}
+
+#intro-arteo {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#intro-arteo.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#intro-excentric {
+  display: flex;
+  gap: 0.05em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#intro-excentric span {
+  display: inline-block;
+  transition: color 0.15s;
+}
+
+.intro-year {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.65rem, 2vw, 0.85rem);
+  color: var(--parchment);
+  letter-spacing: 0.35em;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  margin-bottom: 6px;
+}
+
+.intro-year.show {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+.intro-sub {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+  color: var(--parchment);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  margin-top: 14px;
+  text-align: center;
+  line-height: 1.8;
+  max-width: 90%;
+  transition: opacity 1.2s ease;
+}
+
+.intro-sub.show { opacity: 0.65; }
+
+#intro-divider {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 1s ease;
+  margin: 6px 0;
+}
+#intro-divider.grow { width: min(300px, 80vw); }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  animation: grain-shift 0.5s steps(2) infinite;
+}
+
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2px, 1px); }
+  50%  { transform: translate(1px, -2px); }
+  75%  { transform: translate(-1px, 2px); }
+  100% { transform: translate(2px, -1px); }
+}
+
+#main {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+#main.visible { opacity: 1; }
+
+.section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-crimson {
+  background: radial-gradient(ellipse at center, var(--crimson-mid) 0%, var(--crimson-dark) 60%, #1a0303 100%);
+  position: relative;
+}
+
+.bg-crimson::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../cover/ornamen.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.09;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#hero {
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 15px;
+}
+
+.hero-frame {
+  position: absolute;
+  inset: min(20px, 4vw);
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: clamp(35px, 6vw, 60px);
+  height: clamp(35px, 6vw, 60px);
+  opacity: 0.5;
+}
+.corner svg { width: 100%; height: 100%; }
+.corner.tl { top: 0; left: 0; }
+.corner.tr { top: 0; right: 0; transform: scaleX(-1); }
+.corner.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.corner.br { bottom: 0; right: 0; transform: scale(-1, -1); }
+
+.hero-text-wrap {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 15px;
+  width: 100%;
+}
+
+.cards-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cards-year {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  color: var(--parchment);
+  letter-spacing: 0.25em;
+}
+
+.cards-title {
+  font-family: 'Espoir', serif;
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  color: var(--gold-light);
+  letter-spacing: 0.12em;
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.cards-subtitle {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  color: var(--parchment);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* =================== CARDS SECTION =================== */
+#cards {
+  flex-direction: column;
+  gap: 40px;
+  padding: 60px 15px 0 15px;
+  background: radial-gradient(ellipse at center, var(--crimson-mid) 0%, var(--crimson-dark) 60%, #1a0303 100%);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 40vh !important;
+}
+
+#cards::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../cover/ornamen.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.09;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#cards > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cards-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.card-img {
+  flex: 1;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  display: block;
+  text-decoration: none;
+}
+
+.card-img:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 36px rgba(201, 169, 110, 0.3);
+}
+
+.card-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =================== CARD BURN & ZOOM =================== */
+.burn-card {
+  position: relative;
+  background: var(--dark);
+  overflow: hidden;
+}
+
+.wakil-front {
+  position: relative;
+  z-index: 3;
+  transition: opacity 0.8s ease 0.2s, filter 0.8s ease; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.burn-card:hover .wakil-front {
+  opacity: 0;
+  filter: sepia(1) hue-rotate(-50deg) saturate(7) brightness(1.2) contrast(1.5);
+}
+
+.burn-fire {
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 80%, rgba(255, 60, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 40%, transparent 70%);
+  z-index: 2;
+  opacity: 0;
+  transition: bottom 0.8s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.burn-card:hover .burn-fire {
+  bottom: 0;
+  opacity: 1;
+  animation: fireFlicker 0.1s infinite alternate;
+}
+
+@keyframes fireFlicker {
+  0% { transform: translateY(0) scale(1); filter: brightness(1); }
+  100% { transform: translateY(-5px) scale(1.05); filter: brightness(1.3); }
+}
+
+.burn-hidden {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+}
+
+.burn-card:hover .burn-hidden {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.burn-hidden img {
+  width: 45%; 
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+.burn-hidden span {
+  font-family: 'Espoir', serif;
+  color: var(--gold-light);
+  font-size: clamp(0.55rem, 1.2vw, 0.75rem); 
+  line-height: 1.35;   
+  letter-spacing: 0.03em;
+  padding: 0 8px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(232, 213, 168, 0.4);
+}
+
+.card-zoom-logo {
+  animation: zoomToLogo 1s cubic-bezier(0.7, 0, 0.2, 1) forwards !important;
+  pointer-events: none;
+  z-index: 9999 !important;
+}
+
+@keyframes zoomToLogo {
+  0% { transform: scale(1); opacity: 1; }
+  40% { filter: brightness(1.2); }
+  100% { transform: scale(12); opacity: 0; }
+}
+
+.card-zoom-logo .wakil-front,
+.card-zoom-logo .burn-fire {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.card-zoom-logo .burn-hidden {
+  opacity: 1 !important;
+  transform: scale(1.2) !important;
+}
+
+.card-zoom-logo .burn-hidden span {
+  opacity: 0 !important; 
+}
+
+/* =================== LANDSCAPE ORNAMENT =================== */
+.landscape-scene {
+  position: absolute;
+  bottom: 0; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;     
+  pointer-events: none;
+  z-index: 0; 
+} 
+
+.landscape-scene .ornament img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover; 
+}
+
+/* =================== AWAN & BEYOND THE CLOUDS =================== */
+.cloud-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: screen; 
+  overflow: hidden;
+}
+
+.cloud-img {
+  position: absolute;
+  bottom: -30%;
+  left: 50%;
+  transform: translateX(-50%) scale(1) translateY(100px);
+  width: 100%;
+  min-width: 600px;
+  opacity: 0;
+  transition: transform 3s cubic-bezier(0.25, 1, 0.5, 1), opacity 2s ease;
+  transform-origin: bottom center;
+}
+
+.cloud-img.c1 { width: 120%; transition-delay: 0s; }
+.cloud-img.c2 { width: 150%; left: 35%; transition-delay: 0.3s; }
+.cloud-img.c3 { width: 140%; left: 65%; transition-delay: 0.6s; }
+
+.cloud-layer.active .cloud-img {
+  opacity: 0.25;
+  transform: translateX(-50%) scale(4) translateY(-100px); 
+}
+
+.empty-content {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translate(-50%, 40px);
+  z-index: 10;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease 1.2s, transform 1.5s ease 1.2s;
+  width: 90%;
+}
+
+.empty-content.active {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* =================== MEMBER PAGE (GRID FLEXIBEL) =================== */
+#member {
+  background: #250101;
+  padding: 5rem 1.5rem 3rem;
+  min-height: 100vh;
+}
+
+.member-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #d9b991;
+}
+
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.flip-container {
+  perspective: 1000px;
+  height: clamp(280px, 40vh, 350px);
+  width: 100%;
+}
+
+.flipper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-container:hover .flipper {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.front img, .back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* =================== LOGO PAGE =================== */
+.logo-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-image {
+  max-width: clamp(250px, 50vw, 420px);
+  width: 100%;
+  margin-bottom: 2rem;
+  view-transition-name: card-wakil;
+}
+
+.logo-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.logo-page-wrapper h1 {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.85rem, 2vw, 1.2rem);
+  color: var(--gold-light);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  max-width: 750px;
+  text-transform: none;
+  text-shadow: 0 0 15px rgba(232, 213, 168, 0.25);
+  padding: 0 10px;
+}
+
+.back-nav {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  z-index: 10;
+}
+
+.btn-back {
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 4px;
+  transition: border-bottom 0.3s ease, color 0.3s ease;
+}
+
+.btn-back:hover {
+  border-bottom: 1px solid var(--gold-light);
+  color: var(--gold);
+}
+
+/* =================== ANIMASI SWIPE =================== */
+.card-swipe-left {
+  animation: swipeLeft 0.8s cubic-bezier(0.64, 0, 0.78, 0) forwards;
+  pointer-events: none;
+}
+
+@keyframes swipeLeft {
+  0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateX(0); opacity: 1; }
+  100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateX(-150vw); opacity: 0; }
+}
+
+.card-swipe-right {
+  animation: swipeRight 0.8s cubic-bezier(0.64, 0, 0.78, 0) forwards;
+  pointer-events: none;
+}
+
+@keyframes swipeRight {
+  0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateX(0); opacity: 1; }
+  100% { transform: perspective(1000px) rotateX(10deg) rotateY(-180deg) scale(0.8) translateX(150vw); opacity: 0; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 2px; }
+
+/* ==========================================================================
+   MEDIA QUERIES KHUSUS (HP 16:9 & TABLET 4:3 / 16:10)
+   ========================================================================== */
+
+/* 1. TABLET PORTRAIT / LANDSCAPE (iPad 4:3, Android Tablet 16:10) */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .cards-flex {
+    flex-direction: row; /* Tetap berdampingan jika muat */
+    max-width: 650px;
+    gap: 25px;
+  }
+  
+  .card-img {
+    max-width: 280px;
+  }
+
+  .card-wrapper {
+    grid-template-columns: repeat(3, 1fr); /* 3 Kolom untuk Tablet */
+    gap: 1.2rem;
+  }
+
+  .flip-container {
+    height: 300px;
+  }
+}
+
+/* 2. HP PORTRAIT (Rasio 16:9, 19.5:9, Layar HP) */
+@media screen and (max-width: 600px) {
+  .cards-flex {
+    flex-direction: column; /* Ditumpuk atas-bawah agar pas di HP */
+    align-items: center;
+    gap: 25px;
+  }
+
+  .card-img {
+    max-width: 260px; /* Ukuran pas di genggaman layar HP */
+  }
+
+  .card-wrapper {
+    grid-template-columns: repeat(2, 1fr); /* 2 Kolom untuk HP */
+    gap: 10px;
+  }
+
+  .flip-container {
+    height: 240px; /* Disesuaikan agar tidak terlalu memanjang */
+  }
+
+  .landscape-scene {
+    bottom: -10px;
+  }
+
+  .back-nav {
+    top: 15px;
+    left: 15px;
+  }
+}
