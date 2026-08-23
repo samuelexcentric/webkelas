@@ -798,7 +798,8 @@ h1{
 }
 
 .logo-page-wrapper h1{
-  font-size: 1.3rem;
+  font-family: arial, sans-serif;
+  font-size: 1.1rem;
   color: var(--gold-light);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -859,5 +860,30 @@ h1{
   .back-nav {
     top: 15px;
     left: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .landscape-scene .ornament img {
+    position: relative !important;
+    margin: 0 !important; /* Mematikan pengunci posisi tengah */
+    left: 550px !important; /* Atur angka ini: makin besar makin ke kanan */
+    width: 50% !important;
+    bottom: 600px !important; /* Atur angka ini: makin besar makin ke atas */
+  }
+}
+
+/* Perbaikan posisi teks BEYOND THE CLOUDS khusus HP */
+@media screen and (max-width: 600px) {
+  .empty-content {
+    bottom: 15vh !important; /* Menaikkan posisi teks ke tengah area merah */
+    left: 72% !important;
+    transform: translate(-50%, 0) !important;
+    width: 400px !important;
+  }
+
+  /* Memaksa teks langsung muncul jika scroll pemicunya bermasalah di HP */
+  .empty-content.active {
+    opacity: 1 !important;
   }
 }
