@@ -118,8 +118,8 @@ function setup3dTilt(cardElement, swipeDirection, targetUrl) {
   });
 }
 
-setup3dTilt(document.getElementById('card-ketua'), 'card-swipe-left', 'member.html');
-setup3dTilt(document.getElementById('card-wakil'), 'card-swipe-right', 'logo.html');
+setup3dTilt(document.getElementById('card-ketua'), 'card-swipe-left');
+setup3dTilt(document.getElementById('card-wakil'), 'card-swipe-right');
 
 const cloudObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
