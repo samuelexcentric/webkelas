@@ -107,49 +107,45 @@ function initIntroAnimation() {
 /* ==========================================================================
    1. 3D TILT EFFECT ON CARDS
    ========================================================================== */
-function initCard3DTilt() {
-  const cards = document.querySelectorAll('.art-card');
-  if (!cards.length) return;
+function setup3dTilt(cardElement) {
+  if (!cardElement) return;
 
-  cards.forEach(card => {
-    const perspectiveBox = card.querySelector('.card-perspective');
-    if (!perspectiveBox) return;
+  cardElement.style.transition = "transform 0.1s ease-out, box-shadow 0.1s ease-out";
 
-    let bounds;
+  cardElement.addEventListener('mousemove', function(e) {
+    if (this.classList.contains('clicked')) return; 
 
-    function onMouseEnter() {
-      if (card.classList.contains('clicked')) return;
-      bounds = card.getBoundingClientRect();
-      perspectiveBox.style.transition = 'transform 0.1s ease-out';
-    }
+    const rect = this.getBoundingClientRect();
+    const x = e.clientX - rect.left; 
+    const y = e.clientY - rect.top;  
 
-    function onMouseMove(e) {
-      if (card.classList.contains('clicked')) return;
-      if (!bounds) bounds = card.getBoundingClientRect();
-      
-      const mouseX = e.clientX - bounds.left;
-      const mouseY = e.clientY - bounds.top;
-      
-      const xPct = (mouseX / bounds.width) - 0.5;
-      const yPct = (mouseY / bounds.height) - 0.5;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
 
-      const maxTilt = 12; // Degrees
-      const rotateX = -yPct * maxTilt;
-      const rotateY = xPct * maxTilt;
+    const rotateX = ((centerY - y) / centerY) * -15; 
+    const rotateY = ((centerX - x) / centerX) * -15;
 
-      perspectiveBox.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)`;
-    }
-
-    function onMouseLeave() {
-      if (card.classList.contains('clicked')) return;
-      perspectiveBox.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-      perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-    }
-
-    card.addEventListener('mouseenter', onMouseEnter);
-    card.addEventListener('mousemove', onMouseMove);
-    card.addEventListener('mouseleave', onMouseLeave);
+    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
   });
+
+  cardElement.addEventListener('mouseleave', function() {
+    if (this.classList.contains('clicked')) return;
+    this.style.transition = "transform 0.4s ease"; 
+    this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+    
+    setTimeout(() => {
+      if (!this.classList.contains('clicked')) {
+        this.style.transition = "transform 0.1s ease-out, box-shadow 0.1s ease-out";
+      }
+    }, 400);
+  });
+}
+
+function initCard3DTilt() {
+  const cardStructure = document.getElementById('card-structure');
+  const cardHistory = document.getElementById('card-history');
+  setup3dTilt(cardStructure);
+  setup3dTilt(cardHistory);
 }
 
 /* ==========================================================================
@@ -164,14 +160,11 @@ function initCardClickAnimations() {
       if (this.classList.contains('clicked')) return;
       this.classList.add('clicked');
 
-      const perspectiveBox = this.querySelector('.card-perspective');
-      if (perspectiveBox) {
-        perspectiveBox.style.transition = 'transform 0.2s ease';
-        perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-      }
+      this.style.transition = "transform 0.2s ease";
+      this.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
 
       setTimeout(() => {
-        if (perspectiveBox) perspectiveBox.style.transform = '';
+        this.style.transform = "";
         this.classList.add('card-swipe-left');
 
         setTimeout(() => {
@@ -189,14 +182,11 @@ function initCardClickAnimations() {
       if (this.classList.contains('clicked')) return;
       this.classList.add('clicked');
 
-      const perspectiveBox = this.querySelector('.card-perspective');
-      if (perspectiveBox) {
-        perspectiveBox.style.transition = 'transform 0.2s ease';
-        perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-      }
+      this.style.transition = "transform 0.2s ease";
+      this.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
 
       setTimeout(() => {
-        if (perspectiveBox) perspectiveBox.style.transform = '';
+        this.style.transform = "";
         this.classList.add('card-zoom-logo');
 
         setTimeout(() => {
