@@ -1,21 +1,19 @@
 /* ==========================================================================
-   ARTEO EXCENTRIC — LUXURY VINTAGE DARK ACADEMY THEME
+   ARTEO EXCENTRIC — LUXURY VINTAGE THEME (FULL ESPOIR TYPOGRAPHY)
    ========================================================================== */
 
 @font-face {
   font-family: 'Espoir';
-  src: url('Espoir%20Serif.ttf') format('truetype'),
-       url('Espoir Serif.ttf') format('truetype'),
-       url('Espoir_Serif.ttf') format('truetype');
+  src: url('Espoir Serif.ttf') format('truetype'),
+       url('./Espoir Serif.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --bg-deep: #110202;
-  --bg-maroon-dark: #1e0505;
-  --bg-maroon-mid: #330808;
+  --bg-maroon-dark: #220404;
+  --bg-maroon-mid: #320707;
   --bg-maroon-rich: #480d0d;
   
   --gold-bright: #fcedcf;
@@ -27,8 +25,8 @@
   --parchment-light: #f5ebe0;
   --cream: #fff9ee;
   
-  --shadow-card: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(223, 190, 129, 0.15);
-  --shadow-card-hover: 0 22px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(223, 190, 129, 0.4);
+  --shadow-card: 0 15px 35px rgba(0, 0, 0, 0.75), 0 0 15px rgba(223, 190, 129, 0.15);
+  --shadow-card-hover: 0 22px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(223, 190, 129, 0.4);
 }
 
 /* Base Reset */
@@ -36,26 +34,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Espoir', serif;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg-deep);
+  background-color: var(--bg-maroon-dark);
   color: var(--parchment-light);
-  font-family: 'Espoir', 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Espoir', serif;
 }
 
 body.site-body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  background: radial-gradient(circle at 50% 30%, var(--bg-maroon-mid) 0%, var(--bg-maroon-dark) 55%, var(--bg-deep) 100%);
+  /* Clean rich maroon gradient without dark black vignette edges */
+  background: radial-gradient(circle at 50% 30%, var(--bg-maroon-rich) 0%, var(--bg-maroon-mid) 50%, var(--bg-maroon-dark) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Espoir', serif;
 }
 
-/* Background Texture Layers */
+/* Background Texture Layer */
 .vintage-bg {
   position: fixed;
   inset: 0;
@@ -69,32 +70,14 @@ body.site-body {
   z-index: 1;
 }
 
-.vintage-vignette {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 30%, rgba(10, 2, 2, 0.65) 75%, rgba(5, 1, 1, 0.98) 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
 .grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
-  opacity: 0.04;
+  z-index: 2;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 180px;
-}
-
-/* Magical Particles Canvas */
-#magic-canvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 4;
-  width: 100%;
-  height: 100%;
 }
 
 /* ==========================================================================
@@ -103,7 +86,7 @@ body.site-body {
 #intro {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, var(--bg-maroon-mid) 0%, var(--bg-maroon-dark) 60%, var(--bg-deep) 100%);
+  background: radial-gradient(circle at 50% 40%, var(--bg-maroon-rich) 0%, var(--bg-maroon-mid) 60%, var(--bg-maroon-dark) 100%);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -134,7 +117,7 @@ body.site-body {
 }
 
 .intro-year {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(0.75rem, 1.8vw, 0.95rem);
   color: var(--parchment);
   letter-spacing: 0.4em;
@@ -150,9 +133,9 @@ body.site-body {
 }
 
 #intro-arteo {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(2rem, 5.5vw, 3.8rem);
-  font-weight: 700;
+  font-weight: normal;
   color: var(--gold-bright);
   letter-spacing: 0.25em;
   opacity: 0;
@@ -179,9 +162,9 @@ body.site-body {
 }
 
 #intro-excentric {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(1.8rem, 5vw, 3.4rem);
-  font-weight: 700;
+  font-weight: normal;
   color: var(--gold-primary);
   letter-spacing: 0.28em;
   display: flex;
@@ -195,7 +178,7 @@ body.site-body {
 }
 
 .intro-sub {
-  font-family: 'Espoir', 'Cormorant Garamond', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(0.7rem, 1.6vw, 0.92rem);
   color: var(--parchment-light);
   letter-spacing: 0.08em;
@@ -216,16 +199,16 @@ body.site-body {
 .intro-skip-btn {
   position: absolute;
   bottom: 30px;
-  background: rgba(30, 5, 5, 0.5);
+  background: rgba(45, 8, 8, 0.6);
   border: 1px solid rgba(223, 190, 129, 0.35);
   color: var(--parchment);
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   padding: 8px 18px;
   border-radius: 20px;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
   z-index: 10;
@@ -235,7 +218,7 @@ body.site-body {
   opacity: 1;
   color: var(--gold-bright);
   border-color: var(--gold-primary);
-  background: rgba(72, 13, 13, 0.7);
+  background: rgba(72, 13, 13, 0.85);
   transform: translateY(-2px);
 }
 
@@ -244,7 +227,7 @@ body.site-body {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 606px; /* Exactly matches 606x1024 poster proportions */
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -254,6 +237,7 @@ body.site-body {
   opacity: 0;
   transform: scale(0.98);
   transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
 }
 
 .page-wrapper.visible {
@@ -266,7 +250,9 @@ body.site-body {
    ========================================================================== */
 .section-hero {
   width: 100%;
-  padding-top: clamp(32px, 5vh, 46px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: clamp(35px, 5.5vh, 55px);
   padding-bottom: clamp(10px, 1.8vh, 18px);
   display: flex;
   flex-direction: column;
@@ -289,9 +275,9 @@ body.site-body {
 }
 
 .hero-year {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(0.95rem, 2.2vw, 1.2rem);
-  font-weight: 500;
+  font-weight: normal;
   color: var(--gold-primary);
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -302,30 +288,30 @@ body.site-body {
 
 /* Main Title: ARTEO EXCENTRIC */
 .hero-title {
-  font-family: 'Espoir', 'Cinzel', serif;
-  font-size: clamp(2.3rem, 6.4vw, 3.4rem);
-  font-weight: 700;
+  font-family: 'Espoir', serif;
+  font-size: clamp(2.4rem, 6.5vw, 4.2rem);
+  font-weight: normal;
   color: #eed6a8;
   letter-spacing: 0.12em;
   line-height: 1.1;
   text-transform: uppercase;
   text-shadow: 
     0 0 20px rgba(223, 190, 129, 0.35),
-    0 4px 12px rgba(0, 0, 0, 0.9);
+    0 4px 12px rgba(0, 0, 0, 0.85);
   margin: 4px 0 10px 0;
   white-space: nowrap;
 }
 
 /* Subtitle: A MAGICAL PLACE WHERE ALL DIFFERENT KIND OF HUMAN GATHER */
 .hero-subtitle-wrapper {
-  max-width: 540px;
+  max-width: 600px;
   padding: 0 16px;
 }
 
 .hero-subtitle {
-  font-family: 'Espoir', 'Cormorant Garamond', 'Cinzel', serif;
-  font-size: clamp(0.58rem, 1.3vw, 0.72rem);
-  font-weight: 600;
+  font-family: 'Espoir', serif;
+  font-size: clamp(0.6rem, 1.4vw, 0.78rem);
+  font-weight: normal;
   color: var(--parchment);
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -344,7 +330,7 @@ body.site-body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: clamp(20px, 3.5vh, 36px);
+  margin-top: clamp(20px, 3.5vh, 40px);
 }
 
 /* Cards Flex Container */
@@ -352,8 +338,10 @@ body.site-body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(20px, 4.5vw, 36px);
+  gap: clamp(20px, 3.5vw, 40px);
   width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
   z-index: 20;
   position: relative;
   padding: 0 20px;
@@ -361,7 +349,7 @@ body.site-body {
 
 /* Card Link & Wrapper */
 .art-card {
-  flex: 0 1 clamp(130px, 38vw, 205px);
+  flex: 0 1 clamp(140px, 22vw, 225px);
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -439,97 +427,38 @@ body.site-body {
   box-shadow: inset 0 0 15px rgba(223, 190, 129, 0.3);
 }
 
-/* Subtle Label Hint */
-.card-hint {
-  display: none; /* Hide text badge to keep pristine match with reference */
-}
-
 /* ==========================================================================
-   KOMPONEN TAMAN (LANDSCAPE ARTEO GALLERY)
+   KOMPONEN TAMAN (LANDSCAPE ARTEO GALLERY) — FULL WIDTH DESKTOP/LAPTOP
    ========================================================================== */
 .garden-wrapper {
   position: relative;
   width: 100%;
+  width: 100vw;
   z-index: 10;
-  /* Seamlessly aligns the Arteo Gallery cursive logo right beneath the cards */
-  margin-top: -515px;
+  /* Seamlessly pulls the full-width garden up beneath the cards */
+  margin-top: -96vw;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
 }
 
 .garden-scene {
   position: relative;
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
 .garden-graphic {
-  width: 100%;
+  width: 100vw;
+  min-width: 1100px;
+  max-width: none;
   height: auto;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.85));
-}
-
-/* Glow behind "Arteo Gallery" Neon Text */
-.gallery-glow-pulse {
-  position: absolute;
-  top: 44%;
-  left: 32%;
-  width: 40%;
-  height: 25%;
-  background: radial-gradient(ellipse at center, rgba(240, 200, 140, 0.28) 0%, rgba(223, 190, 129, 0.1) 45%, transparent 75%);
-  border-radius: 50%;
-  filter: blur(12px);
-  pointer-events: none;
-  animation: galleryGlow 4s ease-in-out infinite alternate;
-  z-index: 1;
-}
-
-@keyframes galleryGlow {
-  0% {
-    opacity: 0.55;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 0.95;
-    transform: scale(1.08);
-  }
-}
-
-/* Floating Firefly Lights on Garden */
-.firefly {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #fff5cc;
-  box-shadow: 0 0 10px #ffea9f, 0 0 20px #ffd700;
-  pointer-events: none;
-  animation: fireflyFloat 6s ease-in-out infinite;
-}
-
-.ff-1 { top: 40%; left: 48%; animation-duration: 5.2s; animation-delay: 0.2s; }
-.ff-2 { top: 52%; left: 55%; animation-duration: 6.8s; animation-delay: 1.5s; }
-.ff-3 { top: 38%; left: 52%; animation-duration: 4.5s; animation-delay: 0.8s; }
-.ff-4 { top: 65%; left: 42%; animation-duration: 7.2s; animation-delay: 2.1s; }
-.ff-5 { top: 46%; left: 25%; animation-duration: 5.8s; animation-delay: 3s; }
-.ff-6 { top: 58%; left: 72%; animation-duration: 6.2s; animation-delay: 1.1s; }
-
-@keyframes fireflyFloat {
-  0% {
-    transform: translate(0, 0) scale(0.8);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translate(8px, -14px) scale(1.3);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-6px, -24px) scale(0.6);
-    opacity: 0.2;
-  }
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.75));
 }
 
 /* ==========================================================================
@@ -560,7 +489,7 @@ body.site-body {
 }
 
 .member-title {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(2rem, 5vw, 3rem);
   text-align: center;
   color: var(--gold-bright);
@@ -621,7 +550,7 @@ body.site-body {
 
 /* Back Navigation Button */
 .btn-back {
-  font-family: 'Espoir', 'Cinzel', serif;
+  font-family: 'Espoir', serif;
   font-size: 0.85rem;
   letter-spacing: 0.25em;
   color: var(--gold-bright);
@@ -629,7 +558,7 @@ body.site-body {
   border: 1px solid rgba(223, 190, 129, 0.4);
   padding: 10px 24px;
   border-radius: 4px;
-  background: rgba(30, 5, 5, 0.6);
+  background: rgba(45, 8, 8, 0.7);
   backdrop-filter: blur(8px);
   display: inline-block;
   transition: all 0.3s ease;
@@ -637,7 +566,7 @@ body.site-body {
 }
 
 .btn-back:hover {
-  background: rgba(72, 13, 13, 0.8);
+  background: rgba(72, 13, 13, 0.9);
   border-color: var(--gold-bright);
   color: #ffffff;
   transform: translateY(-2px);
@@ -652,16 +581,6 @@ body.site-body {
 }
 
 /* Logo Page Style */
-.logo-page-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 90vh;
-  text-align: center;
-  padding: 2rem;
-}
-
 .logo-image {
   max-width: 380px;
   width: 100%;
@@ -676,7 +595,7 @@ body.site-body {
 }
 
 .logo-caption {
-  font-family: 'Espoir', 'Cormorant Garamond', serif;
+  font-family: 'Espoir', serif;
   font-size: clamp(1.1rem, 2.5vw, 1.45rem);
   color: var(--parchment-light);
   letter-spacing: 0.08em;
@@ -691,19 +610,27 @@ body.site-body {
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 
-/* Mobile Phones (under 480px) */
-@media screen and (max-width: 480px) {
+/* Mobile Phones (under 768px) */
+@media screen and (max-width: 768px) {
   .hero-title {
     white-space: normal;
   }
   
   .cards-container {
-    gap: 12px;
-    margin-bottom: -35px;
+    gap: 16px;
+    padding: 0 15px;
   }
   
   .art-card {
     flex: 0 1 45%;
+  }
+
+  .garden-wrapper {
+    margin-top: -85vw;
+  }
+
+  .garden-graphic {
+    min-width: 100%;
   }
 
   .card-wrapper {
@@ -716,19 +643,12 @@ body.site-body {
   }
 }
 
-/* Large Screens */
-@media screen and (min-width: 1200px) {
-  .page-wrapper {
-    max-width: 720px;
-  }
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-deep);
+  background: var(--bg-maroon-dark);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--bg-maroon-rich);
