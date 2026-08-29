@@ -97,6 +97,148 @@ body.site-body {
   height: 100%;
 }
 
+/* ==========================================================================
+   INTRO SCREEN OVERLAY
+   ========================================================================== */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, var(--bg-maroon-mid) 0%, var(--bg-maroon-dark) 60%, var(--bg-deep) 100%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.9s ease;
+}
+
+#intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../cover/ornamen.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#intro > * {
+  position: relative;
+  z-index: 1;
+}
+
+.intro-year {
+  font-family: 'Espoir', 'Cinzel', serif;
+  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  color: var(--parchment);
+  letter-spacing: 0.4em;
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  margin-bottom: 4px;
+}
+
+.intro-year.show {
+  opacity: 0.85;
+  transform: translateY(0);
+}
+
+#intro-arteo {
+  font-family: 'Espoir', 'Cinzel', serif;
+  font-size: clamp(2rem, 5.5vw, 3.8rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.25em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  text-shadow: 0 0 25px rgba(223, 190, 129, 0.45);
+}
+
+#intro-arteo.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#intro-divider {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: 6px 0;
+}
+
+#intro-divider.grow {
+  width: clamp(180px, 50vw, 320px);
+}
+
+#intro-excentric {
+  font-family: 'Espoir', 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  font-weight: 700;
+  color: var(--gold-primary);
+  letter-spacing: 0.28em;
+  display: flex;
+  gap: 0.06em;
+  text-shadow: 0 0 20px rgba(223, 190, 129, 0.4);
+}
+
+#intro-excentric span {
+  display: inline-block;
+  transition: color 0.15s ease;
+}
+
+.intro-sub {
+  font-family: 'Espoir', 'Cormorant Garamond', serif;
+  font-size: clamp(0.7rem, 1.6vw, 0.92rem);
+  color: var(--parchment-light);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  margin-top: 14px;
+  text-align: center;
+  line-height: 1.8;
+  max-width: 500px;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  transform: translateY(15px);
+}
+
+.intro-sub.show {
+  opacity: 0.85;
+  transform: translateY(0);
+}
+
+.intro-skip-btn {
+  position: absolute;
+  bottom: 30px;
+  background: rgba(30, 5, 5, 0.5);
+  border: 1px solid rgba(223, 190, 129, 0.35);
+  color: var(--parchment);
+  font-family: 'Espoir', 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+.intro-skip-btn:hover {
+  opacity: 1;
+  color: var(--gold-bright);
+  border-color: var(--gold-primary);
+  background: rgba(72, 13, 13, 0.7);
+  transform: translateY(-2px);
+}
+
 /* Master Layout Container */
 .page-wrapper {
   position: relative;
@@ -109,6 +251,14 @@ body.site-body {
   align-items: center;
   padding: 0;
   min-height: 100vh;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-wrapper.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ==========================================================================

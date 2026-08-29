@@ -3,10 +3,99 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initIntroAnimation();
   initMagicParticles();
   initCard3DTilt();
   initMemberCardFlip();
 });
+
+/* ==========================================================================
+   0. INTRO SCRAMBLE & REVEAL ANIMATION
+   ========================================================================== */
+function initIntroAnimation() {
+  const intro = document.getElementById('intro');
+  const pageWrapper = document.querySelector('.page-wrapper');
+  
+  if (!intro) {
+    if (pageWrapper) pageWrapper.classList.add('visible');
+    return;
+  }
+
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&✦✧';
+  const target = 'EXCENTRIC';
+  const spans = document.querySelectorAll('#intro-excentric span');
+  let introCompleted = false;
+
+  function finishIntro() {
+    if (introCompleted) return;
+    introCompleted = true;
+
+    intro.style.opacity = '0';
+    intro.style.visibility = 'hidden';
+    setTimeout(() => {
+      intro.style.display = 'none';
+      if (pageWrapper) pageWrapper.classList.add('visible');
+    }, 800);
+  }
+
+  // Skip button click
+  const skipBtn = document.getElementById('intro-skip');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', finishIntro);
+  }
+
+  // Allow clicking anywhere on intro to fast-forward / skip
+  intro.addEventListener('click', (e) => {
+    if (e.target !== skipBtn) finishIntro();
+  });
+
+  // Animation Timeline
+  setTimeout(() => {
+    const yr = document.getElementById('intro-year');
+    if (yr) yr.classList.add('show');
+  }, 250);
+
+  setTimeout(() => {
+    const art = document.getElementById('intro-arteo');
+    if (art) art.classList.add('show');
+  }, 750);
+
+  setTimeout(() => {
+    const div = document.getElementById('intro-divider');
+    if (div) div.classList.add('grow');
+  }, 1150);
+
+  setTimeout(() => {
+    spans.forEach((span, i) => {
+      span.textContent = chars[Math.floor(Math.random() * chars.length)];
+      let iterations = 0;
+      const maxIter = 8 + i * 3;
+      const interval = setInterval(() => {
+        if (introCompleted) {
+          clearInterval(interval);
+          return;
+        }
+        span.textContent = chars[Math.floor(Math.random() * chars.length)];
+        span.style.color = `hsl(${Math.random() * 50 + 30}, 85%, ${55 + Math.random() * 25}%)`;
+        iterations++;
+        if (iterations >= maxIter) {
+          clearInterval(interval);
+          span.textContent = target[i];
+          span.style.color = '#dfbe81';
+        }
+      }, 55);
+    });
+  }, 1500);
+
+  setTimeout(() => {
+    const sub = document.getElementById('intro-sub');
+    if (sub) sub.classList.add('show');
+  }, 3300);
+
+  setTimeout(() => {
+    finishIntro();
+  }, 4800);
+}
 
 /* ==========================================================================
    1. FLOATING MAGICAL PARTICLES & FIREFLIES CANVAS
