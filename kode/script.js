@@ -1,160 +1,161 @@
-// ===================== INTRO ANIMATION =====================
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-const target = 'EXCENTRIC';
-const spans = document.querySelectorAll('#intro-excentric span');
+/**
+ * ARTEO EXCENTRIC — Interactive Scripts & Magic Particles
+ */
 
-function randomChar() {
-  return chars[Math.floor(Math.random() * chars.length)];
-}
+document.addEventListener('DOMContentLoaded', () => {
+  initMagicParticles();
+  initCard3DTilt();
+  initMemberCardFlip();
+});
 
-if (document.getElementById('intro-year')) {
-  setTimeout(() => {
-    document.getElementById('intro-year').classList.add('show');
-  }, 200);
+/* ==========================================================================
+   1. FLOATING MAGICAL PARTICLES & FIREFLIES CANVAS
+   ========================================================================== */
+function initMagicParticles() {
+  const canvas = document.getElementById('magic-canvas');
+  if (!canvas) return;
 
-  setTimeout(() => {
-    document.getElementById('intro-arteo').classList.add('show');
-  }, 700);
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
 
-  setTimeout(() => {
-    document.getElementById('intro-divider').classList.add('grow');
-  }, 1100);
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
 
-  setTimeout(() => {
-    spans.forEach((span, i) => {
-      span.textContent = randomChar();
-      let iterations = 0;
-      const maxIter = 8 + i * 3;
-      const interval = setInterval(() => {
-        span.textContent = randomChar();
-        span.style.color = `hsl(${Math.random() * 60 + 20}, 70%, ${50 + Math.random() * 20}%)`;
-        iterations++;
-        if (iterations >= maxIter) {
-          clearInterval(interval);
-          span.textContent = target[i];
-          span.style.color = '#e8d5a8';
-        }
-      }, 60);
-    });
-  }, 1500);
+  window.addEventListener('resize', resize);
+  resize();
 
-  setTimeout(() => {
-    document.getElementById('intro-sub').classList.add('show');
-  }, 3400);
-
-  setTimeout(() => {
-    const intro = document.getElementById('intro');
-    intro.style.transition = 'opacity 1s ease';
-    intro.style.opacity = '0';
-    setTimeout(() => {
-      intro.style.display = 'none';
-      const main = document.getElementById('main');
-      if(main) main.classList.add('visible');
-    }, 1000);
-  }, 4800);
-} else {
-  const main = document.getElementById('main');
-  if(main) main.classList.add('visible');
-}
-
-// ===================== SCROLL REVEAL =====================
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.15 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ===================== FUNCTION HELPER 3D TILT =====================
-function setup3dTilt(cardElement, swipeDirection, targetUrl) {
-  if (!cardElement) return;
-
-  cardElement.style.transition = "transform 0.1s ease-out, box-shadow 0.1s ease-out";
-
-  cardElement.addEventListener('mousemove', function(e) {
-    if (this.classList.contains('clicked')) return; 
-
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left; 
-    const y = e.clientY - rect.top;  
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = ((centerY - y) / centerY) * -20; 
-    const rotateY = ((centerX - x) / centerX) * -20;
-
-    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-  });
-
-  cardElement.addEventListener('mouseleave', function() {
-    if (this.classList.contains('clicked')) return;
-    this.style.transition = "transform 0.4s ease"; 
-    this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-    
-    setTimeout(() => {
-      if (!this.classList.contains('clicked')) {
-        this.style.transition = "transform 0.1s ease-out, box-shadow 0.1s ease-out";
-      }
-    }, 400);
-  });
-
-  cardElement.addEventListener('click', function(e) {
-    e.preventDefault();
-    this.classList.add('clicked');
-
-    this.style.transition = "transform 0.3s ease";
-    this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-
-    setTimeout(() => {
-      this.style.transform = "";
-      this.classList.add(swipeDirection);
-
-      setTimeout(() => {
-        window.location.href = targetUrl || this.href;
-      }, 750);
-    }, 300);
-  });
-}
-
-setup3dTilt(document.getElementById('card-ketua'), 'card-swipe-left');
-setup3dTilt(document.getElementById('card-wakil'), 'card-swipe-right');
-
-const cloudObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const cloudLayer = document.getElementById('cloud-layer');
-      const emptyContent = document.getElementById('empty-content');
-      
-      if(cloudLayer) cloudLayer.classList.add('active');
-      if(emptyContent) emptyContent.classList.add('active');
+  class Particle {
+    constructor() {
+      this.reset(true);
     }
-  });
-}, { threshold: 0 });
 
-const triggerPoint = document.getElementById('cloud-trigger');
-if (triggerPoint) {
-  cloudObserver.observe(triggerPoint);
+    reset(initial = false) {
+      this.x = Math.random() * width;
+      this.y = initial ? Math.random() * height : height + 10;
+      this.size = Math.random() * 2.2 + 0.8;
+      this.speedY = Math.random() * 0.45 + 0.15;
+      this.speedX = (Math.random() - 0.5) * 0.35;
+      this.opacity = Math.random() * 0.7 + 0.2;
+      this.fadeSpeed = Math.random() * 0.008 + 0.003;
+      this.fadeDir = Math.random() > 0.5 ? 1 : -1;
+      // Warm golden tones: rgba(245, 220, 160) to rgba(255, 235, 190)
+      this.r = 240 + Math.floor(Math.random() * 15);
+      this.g = 200 + Math.floor(Math.random() * 35);
+      this.b = 130 + Math.floor(Math.random() * 50);
+    }
+
+    update() {
+      this.y -= this.speedY;
+      this.x += this.speedX;
+
+      this.opacity += this.fadeSpeed * this.fadeDir;
+      if (this.opacity >= 0.85) {
+        this.opacity = 0.85;
+        this.fadeDir = -1;
+      } else if (this.opacity <= 0.1) {
+        this.opacity = 0.1;
+        this.fadeDir = 1;
+      }
+
+      if (this.y < -10 || this.x < -10 || this.x > width + 10) {
+        this.reset();
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.opacity})`;
+      ctx.shadowBlur = this.size * 5;
+      ctx.shadowColor = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.opacity * 0.8})`;
+      ctx.fill();
+    }
+  }
+
+  // Generate particle count based on screen size
+  const particleCount = Math.min(Math.floor(window.innerWidth / 25), 45);
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 }
 
-const cardWakil = document.getElementById('card-wakil');
+/* ==========================================================================
+   2. 3D TILT EFFECT ON CARDS
+   ========================================================================== */
+function initCard3DTilt() {
+  const cards = document.querySelectorAll('.art-card');
+  if (!cards.length) return;
 
-if (cardWakil) {
-  cardWakil.addEventListener('click', function(e) {
-    e.preventDefault();
-    this.classList.add('clicked');
+  cards.forEach(card => {
+    const perspectiveBox = card.querySelector('.card-perspective');
+    if (!perspectiveBox) return;
 
-    this.style.transition = "transform 0.2s ease";
-    this.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+    let bounds;
 
-    setTimeout(() => {
-      this.style.transform = ""; 
-      this.classList.add('card-zoom-logo');
+    function onMouseEnter() {
+      bounds = card.getBoundingClientRect();
+      perspectiveBox.style.transition = 'transform 0.1s ease-out';
+    }
 
-      setTimeout(() => {
-        window.location.href = this.href;
-      }, 900);
-    }, 200);
+    function onMouseMove(e) {
+      if (!bounds) bounds = card.getBoundingClientRect();
+      
+      const mouseX = e.clientX - bounds.left;
+      const mouseY = e.clientY - bounds.top;
+      
+      const xPct = (mouseX / bounds.width) - 0.5;
+      const yPct = (mouseY / bounds.height) - 0.5;
+
+      const maxTilt = 12; // Degrees
+      const rotateX = -yPct * maxTilt;
+      const rotateY = xPct * maxTilt;
+
+      perspectiveBox.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)`;
+    }
+
+    function onMouseLeave() {
+      perspectiveBox.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+      perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    }
+
+    card.addEventListener('mouseenter', onMouseEnter);
+    card.addEventListener('mousemove', onMouseMove);
+    card.addEventListener('mouseleave', onMouseLeave);
+
+    // Smooth navigation with subtle press feedback
+    card.addEventListener('click', function(e) {
+      if (this.getAttribute('href')) {
+        perspectiveBox.style.transform = 'perspective(1000px) scale3d(0.97, 0.97, 0.97)';
+      }
+    });
+  });
+}
+
+/* ==========================================================================
+   3. FLIP CARD ON TOUCH DEVICES (MEMBER PAGE)
+   ========================================================================== */
+function initMemberCardFlip() {
+  const flipContainers = document.querySelectorAll('.flip-container');
+  if (!flipContainers.length) return;
+
+  flipContainers.forEach(container => {
+    container.addEventListener('click', function(e) {
+      // Toggle flip class on mobile tap
+      this.classList.toggle('flipped');
+    });
   });
 }
