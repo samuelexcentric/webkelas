@@ -428,6 +428,154 @@ body.site-body {
 }
 
 /* ==========================================================================
+   CARD ANIMATIONS (SWIPE LEFT & BURN / LOGO ZOOM)
+   ========================================================================== */
+
+/* 1. Structure Card Swipe Left on Click */
+.card-swipe-left {
+  animation: swipeLeft 0.8s cubic-bezier(0.64, 0, 0.78, 0) forwards !important;
+  pointer-events: none !important;
+  z-index: 1000 !important;
+}
+
+@keyframes swipeLeft {
+  0% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(0.9) translateX(-150vw);
+    opacity: 0;
+  }
+}
+
+/* 2. History Card Fire Burn Effect on Hover */
+.burn-card .card-frame {
+  position: relative;
+  background: #140202;
+  overflow: hidden;
+}
+
+.history-front {
+  position: relative;
+  z-index: 3;
+  transition: opacity 0.8s ease 0.15s, filter 0.8s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.burn-card:hover .history-front {
+  opacity: 0;
+  filter: sepia(1) hue-rotate(-50deg) saturate(8) brightness(1.25) contrast(1.6);
+}
+
+.burn-fire {
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 80%, rgba(255, 75, 0, 0.9) 0%, rgba(255, 20, 0, 0.5) 45%, transparent 75%);
+  z-index: 4;
+  opacity: 0;
+  transition: bottom 0.8s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.burn-card:hover .burn-fire {
+  bottom: 0;
+  opacity: 1;
+  animation: fireFlicker 0.12s infinite alternate;
+}
+
+@keyframes fireFlicker {
+  0% { transform: translateY(0) scale(1); filter: brightness(1); }
+  100% { transform: translateY(-6px) scale(1.05); filter: brightness(1.35); }
+}
+
+.burn-hidden {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.8s ease 0.35s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+  padding: 12px 10px;
+  text-align: center;
+  background: radial-gradient(circle at center, #2e0808 0%, #150202 100%);
+  pointer-events: none;
+}
+
+.burn-card:hover .burn-hidden {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.burn-hidden img {
+  width: 72%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 15px rgba(223, 190, 129, 0.45));
+  pointer-events: none;
+}
+
+.burn-hidden span {
+  font-family: 'Espoir', serif;
+  color: var(--gold-bright);
+  font-size: clamp(0.55rem, 0.95vw, 0.68rem);
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  padding: 0 4px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(232, 213, 168, 0.5);
+}
+
+/* 3. History Card Click: Zoom into Logo Center */
+.card-zoom-logo {
+  animation: zoomToLogo 0.95s cubic-bezier(0.7, 0, 0.2, 1) forwards !important;
+  pointer-events: none !important;
+  z-index: 9999 !important;
+}
+
+@keyframes zoomToLogo {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  35% {
+    filter: brightness(1.3);
+  }
+  100% {
+    transform: scale(12);
+    opacity: 0;
+  }
+}
+
+.card-zoom-logo .history-front,
+.card-zoom-logo .burn-fire {
+  opacity: 0 !important;
+  transition: opacity 0.25s ease !important;
+}
+
+.card-zoom-logo .burn-hidden {
+  opacity: 1 !important;
+  transform: scale(1.4) !important;
+  transition: all 0.4s ease !important;
+}
+
+.card-zoom-logo .burn-hidden span {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+/* ==========================================================================
    KOMPONEN TAMAN (LANDSCAPE ARTEO GALLERY) — FULL WIDTH DESKTOP/LAPTOP
    ========================================================================== */
 .garden-wrapper {

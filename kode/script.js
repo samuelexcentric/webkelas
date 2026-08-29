@@ -1,10 +1,11 @@
 /**
- * ARTEO EXCENTRIC — Interactive Scripts
+ * ARTEO EXCENTRIC — Interactive Scripts & Card Animations
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initIntroAnimation();
   initCard3DTilt();
+  initCardClickAnimations();
   initMemberCardFlip();
 });
 
@@ -117,11 +118,13 @@ function initCard3DTilt() {
     let bounds;
 
     function onMouseEnter() {
+      if (card.classList.contains('clicked')) return;
       bounds = card.getBoundingClientRect();
       perspectiveBox.style.transition = 'transform 0.1s ease-out';
     }
 
     function onMouseMove(e) {
+      if (card.classList.contains('clicked')) return;
       if (!bounds) bounds = card.getBoundingClientRect();
       
       const mouseX = e.clientX - bounds.left;
@@ -138,6 +141,7 @@ function initCard3DTilt() {
     }
 
     function onMouseLeave() {
+      if (card.classList.contains('clicked')) return;
       perspectiveBox.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
       perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
     }
@@ -145,18 +149,66 @@ function initCard3DTilt() {
     card.addEventListener('mouseenter', onMouseEnter);
     card.addEventListener('mousemove', onMouseMove);
     card.addEventListener('mouseleave', onMouseLeave);
-
-    // Smooth navigation with subtle press feedback
-    card.addEventListener('click', function(e) {
-      if (this.getAttribute('href')) {
-        perspectiveBox.style.transform = 'perspective(1000px) scale3d(0.97, 0.97, 0.97)';
-      }
-    });
   });
 }
 
 /* ==========================================================================
-   2. FLIP CARD ON TOUCH DEVICES (MEMBER PAGE)
+   2. CARD CLICK ANIMATIONS (SWIPE LEFT & ZOOM TO LOGO)
+   ========================================================================== */
+function initCardClickAnimations() {
+  // Card 1: Structure -> Swipe Left Animation
+  const cardStructure = document.getElementById('card-structure');
+  if (cardStructure) {
+    cardStructure.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (this.classList.contains('clicked')) return;
+      this.classList.add('clicked');
+
+      const perspectiveBox = this.querySelector('.card-perspective');
+      if (perspectiveBox) {
+        perspectiveBox.style.transition = 'transform 0.2s ease';
+        perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      }
+
+      setTimeout(() => {
+        if (perspectiveBox) perspectiveBox.style.transform = '';
+        this.classList.add('card-swipe-left');
+
+        setTimeout(() => {
+          window.location.href = this.href;
+        }, 750);
+      }, 200);
+    });
+  }
+
+  // Card 2: History -> Zoom in to Logo Center Animation
+  const cardHistory = document.getElementById('card-history');
+  if (cardHistory) {
+    cardHistory.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (this.classList.contains('clicked')) return;
+      this.classList.add('clicked');
+
+      const perspectiveBox = this.querySelector('.card-perspective');
+      if (perspectiveBox) {
+        perspectiveBox.style.transition = 'transform 0.2s ease';
+        perspectiveBox.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      }
+
+      setTimeout(() => {
+        if (perspectiveBox) perspectiveBox.style.transform = '';
+        this.classList.add('card-zoom-logo');
+
+        setTimeout(() => {
+          window.location.href = this.href;
+        }, 850);
+      }, 150);
+    });
+  }
+}
+
+/* ==========================================================================
+   3. FLIP CARD ON TOUCH DEVICES (MEMBER PAGE)
    ========================================================================== */
 function initMemberCardFlip() {
   const flipContainers = document.querySelectorAll('.flip-container');
