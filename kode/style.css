@@ -803,14 +803,13 @@ body.site-body {
 
   .section-showcase {
     flex: 1;
-    position: relative;
+    position: static;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     margin-top: clamp(8px, 1.8vh, 18px);
-    overflow: hidden;
   }
   
   .cards-container {
@@ -832,7 +831,7 @@ body.site-body {
 
   .garden-wrapper {
     position: absolute;
-    bottom: 0;
+    bottom: -2px !important;
     left: 0;
     right: 0;
     width: 100vw;
